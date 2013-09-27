@@ -10,5 +10,13 @@ package com.google.gwt.angular.client;
 public interface Scope<T extends Scope<T>> extends Model<T> {
   <S> void $watch(String expr, WatchFunction<S> func);
 
+  void $apply();
+
   void $apply(String expr);
+
+  void $apply(Runnable runnable);
+
+  void $onDestroy(Runnable runnable);
+
+  void $on(String eventName, Runnable runnable);
 }

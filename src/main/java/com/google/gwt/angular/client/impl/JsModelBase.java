@@ -12,6 +12,7 @@ public class JsModelBase<T extends Model<T>> extends JavaScriptObject implements
   protected JsModelBase() {
   }
 
+  @Override
   final public JsonObject json() {
     return Util.reinterpret_cast(this);
   }

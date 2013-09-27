@@ -8,8 +8,6 @@ import com.google.gwt.core.client.GWT;
 import elemental.js.util.JsArrayOf;
 import elemental.util.ArrayOf;
 
-import static com.google.gwt.angular.client.Util.make;
-
 @NgInject(name = "TodoCtrl")
 public class TodoController extends AngularController<TodoScope> {
 
@@ -51,7 +49,7 @@ public class TodoController extends AngularController<TodoScope> {
   }
 
   private Todo makeTodo() {
-    return make(GWT.create(Todo.class));
+    return GWT.create(Todo.class);
   }
 
   public void addTodo() {

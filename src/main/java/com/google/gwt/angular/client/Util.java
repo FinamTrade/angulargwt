@@ -15,7 +15,9 @@ public class Util {
     return value.toJson();
   }
 
+/*
   public static <T> T make(Object factory) {
     return ((Factory<T>) factory).create();
   }
+*/
 }

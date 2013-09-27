@@ -13,15 +13,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.*;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import elemental.js.json.JsJsonObject;
 import elemental.json.JsonObject;
 import elemental.util.ArrayOf;
 import elemental.util.ArrayOfString;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class AngularGenerator extends Generator {
   public static final String IMPL = "Impl";
@@ -36,7 +33,7 @@ public class AngularGenerator extends Generator {
   private JClassType controllerType;
   private JClassType modelType;
   private JClassType moduleType;
-  private JClassType factoryType;
+//  private JClassType factoryType;
   private JClassType arrayOfType;
 
   @Override
@@ -50,16 +47,18 @@ public class AngularGenerator extends Generator {
     controllerType = typeOracle.findType(AngularController.class.getName());
     modelType = typeOracle.findType(Model.class.getName());
     moduleType = typeOracle.findType(AngularModule.class.getName());
-    factoryType = typeOracle.findType(Factory.class.getName());
+//    factoryType = typeOracle.findType(Factory.class.getName());
     arrayOfType = typeOracle.findType(ArrayOf.class.getName());
     logger.log(TreeLogger.Type.DEBUG, "Generating " + typeName);
     JClassType type = typeOracle.findType(typeName);
     if (type.isAssignableTo(controllerType)) {
       return generateController(logger, context, typeName, type);
     } else if (type.isAssignableTo(scopeType)) {
-      return generateScopeFactory(logger, context, type);
+      return generateScope(logger, context, type);
+//      return generateScopeFactory(logger, context, type);
     } else if (type.isAssignableTo(modelType)) {
-      return generateModelFactory(logger, context, type);
+      return generateScope(logger, context, type);
+//      return generateModelFactory(logger, context, type);
     } else if (type.isAssignableTo(moduleType)) {
       return generateModule(logger, context, type);
     }
@@ -67,71 +66,71 @@ public class AngularGenerator extends Generator {
     throw new UnableToCompleteException();
   }
 
-  private String generateScopeFactory(TreeLogger logger, GeneratorContext context,
-                                      JClassType type) throws UnableToCompleteException {
-    ClassSourceFileComposerFactory fac =
-        new ClassSourceFileComposerFactory(type.getPackage().getName(),
-            type.getName() + FACTORY);
-    fac.addImplementedInterface(factoryType.getQualifiedSourceName());
-    fac.addImport(JsJsonObject.class.getName());
-    fac.addImport(Util.class.getName());
-    PrintWriter pw = context.tryCreate(logger, type.getPackage().getName(),
-        type.getName() + FACTORY);
-    SourceWriter sw = null;
-    String typeName = type.getQualifiedSourceName() + FACTORY;
-    if (pw != null) {
-      sw = fac.createSourceWriter(context, pw);
-    }
-    if (sw == null) {
-      return typeName;
-    }
+//  private String generateScopeFactory(TreeLogger logger, GeneratorContext context,
+//                                      JClassType type) throws UnableToCompleteException {
+//    ClassSourceFileComposerFactory fac =
+//        new ClassSourceFileComposerFactory(type.getPackage().getName(),
+//            type.getName() + FACTORY);
+//    fac.addImplementedInterface(factoryType.getQualifiedSourceName());
+//    fac.addImport(JsJsonObject.class.getName());
+//    fac.addImport(Util.class.getName());
+//    PrintWriter pw = context.tryCreate(logger, type.getPackage().getName(),
+//        type.getName() + FACTORY);
+//    SourceWriter sw = null;
+//    String typeName = type.getQualifiedSourceName() + FACTORY;
+//    if (pw != null) {
+//      sw = fac.createSourceWriter(context, pw);
+//    }
+//    if (sw == null) {
+//      return typeName;
+//    }
+//
+//    sw.indent();
+//    sw.println("public native " + generateScope(logger, context, type) + " create() /*-{");
+//    sw.indent();
+//
+//
+//    sw.println("return {};");
+//    sw.outdent();
+//    sw.println("}-*/;");
+//    sw.outdent();
+//    sw.commit(logger);
+//    logger.log(TreeLogger.Type.DEBUG, "Generated " + typeName);
+//    return typeName;
+//  }
 
-    sw.indent();
-    sw.println("public native " + generateScope(logger, context, type) + " create() /*-{");
-    sw.indent();
-
-
-    sw.println("return {};");
-    sw.outdent();
-    sw.println("}-*/;");
-    sw.outdent();
-    sw.commit(logger);
-    logger.log(TreeLogger.Type.DEBUG, "Generated " + typeName);
-    return typeName;
-  }
-
-  private String generateModelFactory(TreeLogger logger, GeneratorContext context,
-                                      JClassType type) throws UnableToCompleteException {
-    ClassSourceFileComposerFactory fac =
-        new ClassSourceFileComposerFactory(type.getPackage().getName(),
-            type.getName() + FACTORY);
-    fac.addImplementedInterface(factoryType.getQualifiedSourceName());
-    fac.addImport(JsJsonObject.class.getName());
-    fac.addImport(Util.class.getName());
-    PrintWriter pw = context.tryCreate(logger, type.getPackage().getName(),
-        type.getName() + FACTORY);
-    SourceWriter sw = null;
-    String typeName = type.getQualifiedSourceName() + FACTORY;
-    if (pw != null) {
-      sw = fac.createSourceWriter(context, pw);
-    }
-    if (sw == null) {
-      return typeName;
-    }
-
-    sw.indent();
-    sw.println("public native " + generateModelType(logger, context, type) + " create() /*-{");
-    sw.indent();
-
-
-    sw.println("return {};");
-    sw.outdent();
-    sw.println("}-*/;");
-    sw.outdent();
-    sw.commit(logger);
-    logger.log(TreeLogger.Type.DEBUG, "Generated " + typeName);
-    return typeName;
-  }
+//  private String generateModelFactory(TreeLogger logger, GeneratorContext context,
+//                                      JClassType type) throws UnableToCompleteException {
+//    ClassSourceFileComposerFactory fac =
+//        new ClassSourceFileComposerFactory(type.getPackage().getName(),
+//            type.getName() + FACTORY);
+//    fac.addImplementedInterface(factoryType.getQualifiedSourceName());
+//    fac.addImport(JsJsonObject.class.getName());
+//    fac.addImport(Util.class.getName());
+//    PrintWriter pw = context.tryCreate(logger, type.getPackage().getName(),
+//        type.getName() + FACTORY);
+//    SourceWriter sw = null;
+//    String typeName = type.getQualifiedSourceName() + FACTORY;
+//    if (pw != null) {
+//      sw = fac.createSourceWriter(context, pw);
+//    }
+//    if (sw == null) {
+//      return typeName;
+//    }
+//
+//    sw.indent();
+//    sw.println("public native " + generateModelType(logger, context, type) + " create() /*-{");
+//    sw.indent();
+//
+//
+//    sw.println("return {};");
+//    sw.outdent();
+//    sw.println("}-*/;");
+//    sw.outdent();
+//    sw.commit(logger);
+//    logger.log(TreeLogger.Type.DEBUG, "Generated " + typeName);
+//    return typeName;
+//  }
 
   private String generateModule(TreeLogger logger, GeneratorContext context, JClassType type) {
     NgDepends deps = type.getAnnotation(NgDepends.class);
@@ -182,7 +181,19 @@ public class AngularGenerator extends Generator {
     if (ngName != null) {
       modName = ngName.value();
     }
-    sw.println("var module = $wnd.angular.module('" + modName + "', []);");
+
+    StringBuilder outerDeps = new StringBuilder();
+    NgNativeDepends nativeDeps = type.getAnnotation(NgNativeDepends.class);
+    if (nativeDeps != null) {
+      for (String dep : nativeDeps.value()) {
+        outerDeps.append("'").append(dep).append("',");
+      }
+    }
+    if (outerDeps.length() > 0) {
+      outerDeps.setLength(outerDeps.length() - 1);//remove trailing comma
+    }
+
+    sw.println("var module = $wnd.angular.module('" + modName + "', [" + outerDeps + "]);");
     if (deps != null) {
       int i = 0;
       for (Class<?> clazz : deps.value()) {
@@ -395,7 +406,7 @@ public class AngularGenerator extends Generator {
       if (i > 0) {
         args.append(", ");
       }
-      args.append("arg" + i);
+      args.append("arg").append(i);
     }
     return args.toString();
   }
@@ -404,18 +415,37 @@ public class AngularGenerator extends Generator {
     return method.getReturnType() == JPrimitiveType.VOID;
   }
 
+  private boolean typeEquals(JType type1, JType type2) {
+    if (type1 == null || type2 == null) {
+      return type1 == type2;
+    }
+    return type1.getErasedType() == type2.getErasedType();
+  }
+
   private Collection<JMethod> publicActionMethods(JClassType type, JMethod onInitMethod) {
     Collection<JMethod> methods = new ArrayList<JMethod>();
-    for (JMethod method : type.getMethods()) {
-      if (method == onInitMethod) {
-        continue;
+    Set<String> methodNames = new HashSet<String>();
+
+    while(!typeEquals(type, controllerType)) {
+      for (JMethod method : type.getMethods()) {
+        if (method == onInitMethod) {
+          continue;
+        }
+        if (method.isAnnotationPresent(NgWatch.class) ||
+                method.isAnnotationPresent(NgExclude.class)) {
+          continue;
+        }
+        String name = method.getName();
+        if (methodNames.contains(name)) {
+          continue;
+        }
+
+        if (method.isPublic() && !method.isAbstract() && !method.isStatic()) {
+          methods.add(method);
+          methodNames.add(name);
+        }
       }
-      if (method.getAnnotation(NgWatch.class) != null) {
-        continue;
-      }
-      if (method.isPublic() && !method.isAbstract() && !method.isStatic()) {
-        methods.add(method);
-      }
+      type = type.getSuperclass();
     }
     return methods;
   }
@@ -508,14 +538,29 @@ public class AngularGenerator extends Generator {
     // constructor
     sw.println("protected " + simpleName + "() {}");
 
+    /*Set<JClassType> types = new HashSet<JClassType>();
+    Queue<JClassType> queue = new LinkedList<JClassType>();
+    queue.add(scopeClass);
+    while(!queue.isEmpty()) {
+      JClassType type = queue.poll();
+      types.add(type);
+      for (JClassType interfaceType : type.getImplementedInterfaces()) {
+        if (!types.contains(interfaceType) &&
+            !typeEquals(interfaceType, modelType) && !typeEquals(interfaceType, scopeType)) {
+          queue.add(interfaceType);
+        }
+      }
+    }
+    for (JClassType type : types) { }
+    */
+
     // getters and setters
     for (JMethod method : scopeClass.getMethods()) {
       if (isGetter(method)) {
         JPrimitiveType pType = method.getReturnType().isPrimitive();
         if (pType != null) {
           if (pType != JPrimitiveType.BOOLEAN) {
-            sw.println("final public " + pType.getSimpleSourceName() + " " + method.getName() + "" +
-                "() {");
+            sw.println("final public " + pType.getSimpleSourceName() + " " + method.getName() + "() {");
             sw.indent();
             sw.println("return (" + pType.getSimpleSourceName() + ") json().getNumber(" +
                 quotedFieldName(method) + ");");
@@ -542,13 +587,10 @@ public class AngularGenerator extends Generator {
           } else {
             sw.println(
                 "final public " + method.getReturnType().getParameterizedQualifiedSourceName() +
-                    " " +
-                    method.getName() + "" +
-                    "() {");
+                    " " + method.getName() + "() {");
             sw.indent();
             generateDependentType(logger, context, method.getReturnType().isClassOrInterface());
-            sw.println("return Util.reinterpret_cast(json().get(" + quotedFieldName(method) + "))" +
-                ";");
+            sw.println("return Util.reinterpret_cast(json().get(" + quotedFieldName(method) + "));");
             sw.outdent();
             sw.println("}");
             // handle arrays
@@ -561,8 +603,7 @@ public class AngularGenerator extends Generator {
           if (pType != JPrimitiveType.BOOLEAN) {
             sw.println(
                 "final public " + fluentOrVoid(method) + " " + method.getName() + "(" + pType
-                    .getSimpleSourceName() +
-                    " arg) {");
+                    .getSimpleSourceName() + " arg) {");
             sw.indent();
             sw.println("json().put(" + quotedFieldName(method) + ", arg);");
             maybeFluentReturn(sw, method);
@@ -570,8 +611,7 @@ public class AngularGenerator extends Generator {
             sw.println("}");
           } else if (pType == JPrimitiveType.BOOLEAN) {
             sw.println("final public " + fluentOrVoid(method) + " " + method.getName() + "" +
-                "(boolean "
-                + " arg) {");
+                "(boolean arg) {");
             sw.indent();
             sw.println("json().put(" + quotedFieldName(method) + ", arg);");
             maybeFluentReturn(sw, method);
@@ -595,9 +635,7 @@ public class AngularGenerator extends Generator {
             String paramType =
                 method.getParameters()[0].getType().getParameterizedQualifiedSourceName();
             sw.println("final public " + fluentOrVoid(method) + " " + method.getName() + "(" +
-                paramType +
-                " arg)" +
-                " {");
+                paramType + " arg) {");
             sw.indent();
             generateDependentType(logger, context, method.getReturnType().isClassOrInterface());
 

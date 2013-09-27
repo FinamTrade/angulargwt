@@ -10,9 +10,10 @@ public class JsNgTimeout extends JavaScriptObject implements NgTimeout {
   protected JsNgTimeout() {
   }
 
+  @Override
   final public native void schedule(Runnable func, int millis, boolean flag) /*-{
-      this(function () {
+      this($entry(function () {
           func.@java.lang.Runnable::run()();
-      }, millis, flag);
+      }), millis, flag);
   }-*/;
 }
