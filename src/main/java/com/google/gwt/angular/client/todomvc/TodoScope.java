@@ -5,7 +5,8 @@ import com.google.gwt.angular.client.Scope;
 import elemental.util.ArrayOf;
 
 /**
- * TodoScope declaration.  Follows the {@link com.google.gwt.angular.client.Model} spec for setting up fields on the scope object.
+ * TodoScope declaration.
+ * Follows the {@link com.google.gwt.angular.client.Model} spec for setting up fields on the scope object.
  */
 public interface TodoScope extends Scope<TodoScope> {
   int remainingCount();

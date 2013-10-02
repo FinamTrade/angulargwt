@@ -1,4 +1,13 @@
-target
-.idea
+.gradle/
+.classpath
+.project
+.settings/
+build/
+target/
+out/
+.idea/
 *.iml
+*.iws
+*.ipr
+.DS_Store
 atlassian-ide-plugin.xml

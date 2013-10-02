@@ -9,5 +9,6 @@ import elemental.events.EventListener;
 @NgInject(name = "$element")
 public interface NgElement extends Element {
   void bind(String evt, Runnable run);
+
   void bind(String evt, EventListener listener);
 }

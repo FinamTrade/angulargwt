@@ -15,6 +15,6 @@ final public class RouteParams extends JavaScriptObject {
 //    }
 
     public native String get(String key) /*-{
-        return this[key];
+      return this[key];
     }-*/;
 }

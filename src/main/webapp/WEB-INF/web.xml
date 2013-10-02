@@ -5,18 +5,6 @@
 
 <web-app>
 
-    <!--&lt;!&ndash; Servlets &ndash;&gt;-->
-    <!--<servlet>-->
-    <!--<servlet-name>greetServlet</servlet-name>-->
-    <!--<servlet-class>com.google.gwt.angular.server.GreetingServiceImpl</servlet-class>-->
-    <!--</servlet>-->
-
-    <!--<servlet-mapping>-->
-    <!--<servlet-name>greetServlet</servlet-name>-->
-    <!--<url-pattern>/angulargwt/greet</url-pattern>-->
-    <!--</servlet-mapping>-->
-
-    <!-- Default page to serve -->
     <welcome-file-list>
         <welcome-file>angulargwt.html</welcome-file>
     </welcome-file-list>

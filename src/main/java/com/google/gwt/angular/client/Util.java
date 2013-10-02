@@ -1,7 +1,5 @@
 package com.google.gwt.angular.client;
 
-import elemental.json.JsonValue;
-
 public class Util {
   /**
    * Only safe to do with JavaScriptObjects.
@@ -10,10 +8,13 @@ public class Util {
       return o;
   }-*/;
 
+  //Use json().toJson() instead
+/*
   public static String toJson(Object o) {
     JsonValue value = reinterpret_cast(o);
     return value.toJson();
   }
+*/
 
 /*
   public static <T> T make(Object factory) {

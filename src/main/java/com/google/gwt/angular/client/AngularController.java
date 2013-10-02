@@ -1,9 +1,6 @@
 package com.google.gwt.angular.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import elemental.util.ArrayOf;
-
-import java.util.Iterator;
 
 /**
  * Base class for all implementations of AngularJs conntrollers in GWT. To use,
@@ -44,26 +41,5 @@ public class AngularController<T extends Scope> {
   }
 
   protected void register(JavaScriptObject module) {
-  }
-
-  protected <S> Iterable<S> iterable(final ArrayOf<S> array) {
-    return new Iterable<S>() {
-      public Iterator<S> iterator() {
-        return new Iterator<S>() {
-          int next = 0;
-
-          public boolean hasNext() {
-            return next < array.length();
-          }
-
-          public S next() {
-            return array.get(next++);
-          }
-
-          public void remove() {
-          }
-        };
-      }
-    };
   }
 }

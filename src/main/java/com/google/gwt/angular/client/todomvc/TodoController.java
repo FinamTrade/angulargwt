@@ -1,9 +1,6 @@
 package com.google.gwt.angular.client.todomvc;
 
-import com.google.gwt.angular.client.AngularController;
-import com.google.gwt.angular.client.Location;
-import com.google.gwt.angular.client.NgInject;
-import com.google.gwt.angular.client.NgWatch;
+import com.google.gwt.angular.client.*;
 import com.google.gwt.core.client.GWT;
 import elemental.js.util.JsArrayOf;
 import elemental.util.ArrayOf;
@@ -79,14 +76,14 @@ public class TodoController extends AngularController<TodoScope> {
   }
 
   public void markAll(boolean done) {
-    for (Todo todo : iterable(todos)) {
+    for (Todo todo : Angular.iterable(todos)) {
       todo.setCompleted(done);
     }
   }
 
   public void clearDoneTodos() {
     ArrayOf<Todo> result = JsArrayOf.create();
-    for (Todo todo : iterable(todos)) {
+    for (Todo todo : Angular.iterable(todos)) {
       if (!todo.getCompleted()) {
         result.push(todo);
       }

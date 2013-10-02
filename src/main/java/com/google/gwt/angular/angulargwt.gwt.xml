@@ -5,6 +5,13 @@
 
     <!-- Specify the app entry point class.                         -->
     <entry-point class='com.google.gwt.angular.client.todomvc.TodoApp'/>
+
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+    <set-property name="compiler.useSourceMaps" value="true" />
+
+    <set-property name="user.agent" value="safari"/>
+    <set-configuration-property name="user.agent.runtimeWarning" value="false"/>
+
     <generate-with class="com.google.gwt.angular.rebind.AngularGenerator">
         <when-type-assignable class="com.google.gwt.angular.client.Model"/>
     </generate-with>

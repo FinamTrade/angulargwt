@@ -13,13 +13,13 @@ public class JsNgElement extends JsElement implements NgElement {
 
   @Override
   final public native void bind(String eventType, Runnable func) /*-{
-      this.bind(eventType, $entry(function () {
-          func.@java.lang.Runnable::run()();
-      }));
+    this.bind(eventType, $entry(function () {
+      func.@java.lang.Runnable::run()();
+    }));
   }-*/;
 
   @Override
   final public native void bind(String eventType, EventListener listener) /*-{
-      this.bind(eventType, $entry(@elemental.js.dom.JsElementalMixinBase::getHandlerFor(Lelemental/events/EventListener;)(listener)));
+    this.bind(eventType, $entry(@elemental.js.dom.JsElementalMixinBase::getHandlerFor(Lelemental/events/EventListener;)(listener)));
   }-*/;
 }

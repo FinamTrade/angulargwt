@@ -1,5 +1,6 @@
 package com.google.gwt.angular.client.todomvc;
 
+import com.google.gwt.angular.client.Angular;
 import com.google.gwt.angular.client.Filter;
 import com.google.gwt.angular.client.NgInject;
 import elemental.js.util.JsArrayOf;
@@ -12,8 +13,7 @@ import elemental.util.ArrayOf;
 public class TodoFilter implements Filter<Todo> {
   public ArrayOf<Todo> filter(ArrayOf<Todo> todos, Todo todoFilter) {
     ArrayOf<Todo> result = JsArrayOf.create();
-    for (int i = 0; i < todos.length(); i++) {
-      Todo todo = todos.get(i);
+    for (Todo todo : Angular.iterable(todos)) {
       boolean allMatch = true;
       for (String key : todoFilter.json().keys()) {
         allMatch = allMatch && todo.json().get(key) == todoFilter.json().get(key);

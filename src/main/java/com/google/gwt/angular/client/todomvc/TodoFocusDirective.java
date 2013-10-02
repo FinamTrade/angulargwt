@@ -14,7 +14,6 @@ public class TodoFocusDirective implements Directive {
   /**
    * Called to supply dependency injection for todo-focus.
    */
-
   public void onFocus(NgTimeout timeout) {
     this.timeout = timeout;
   }

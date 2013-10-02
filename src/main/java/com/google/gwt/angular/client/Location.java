@@ -11,10 +11,10 @@ final public class Location extends JavaScriptObject {
   }
 
   public native String path() /*-{
-      return this.path();
+    return this.path();
   }-*/;
 
   public native void path(String p) /*-{
-      return this.path(p);
+    return this.path(p);
   }-*/;
 }

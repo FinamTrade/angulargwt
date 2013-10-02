@@ -1,0 +1,60 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+group = 'com.google.gwt'
+version = '1.0-SNAPSHOT'
+
+repositories {
+//    maven {
+//        url 'http://msk-projects2:81/artifactory/repo'
+//    }
+    mavenCentral()
+}
+
+idea {
+    module {
+        languageLevel = '1.6'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+            srcDir 'src/main/webapp'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
+}
+
+dependencies {
+    compile 'com.google.gwt:gwt-dev:2.5.1'
+    compile 'com.google.gwt:gwt-user:2.5.1'
+    compile 'com.google.gwt:gwt-elemental:2.5.1'
+    compile 'com.google.guava:guava:15.0'
+    testCompile 'junit:junit:4.11'
+    testCompile 'javax.validation:validation-api:1.1.0.Final'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://msk-projects2:81/artifactory/libs-snapshot-local")
+        }
+    }
+}
