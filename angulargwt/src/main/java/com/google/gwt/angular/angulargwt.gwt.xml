@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+    <inherits name="elemental.Elemental"/>
+
+    <generate-with class="com.google.gwt.angular.rebind.AngularGenerator">
+        <when-type-assignable class="com.google.gwt.angular.client.Model"/>
+    </generate-with>
+    <generate-with class="com.google.gwt.angular.rebind.AngularGenerator">
+        <when-type-assignable class="com.google.gwt.angular.client.Scope"/>
+    </generate-with>
+    <generate-with class="com.google.gwt.angular.rebind.AngularGenerator">
+        <when-type-assignable class="com.google.gwt.angular.client.AngularController"/>
+    </generate-with>
+    <generate-with class="com.google.gwt.angular.rebind.AngularGenerator">
+        <when-type-assignable class="com.google.gwt.angular.client.AngularModule"/>
+    </generate-with>
+</module>

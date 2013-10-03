@@ -5,7 +5,6 @@ magic to reduce code size, but is likely to break when running inside a JVM.
 
 Currently undone: 
 
-* Refactor project into library and samples.
 * More JavaDoc.
 * Unit tests.
 * Transitive dependencies, modules that depend on modules.

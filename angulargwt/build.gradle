@@ -1,0 +1,40 @@
+dependencies {
+    compile 'com.google.gwt:gwt-dev:2.5.1'
+    compile 'com.google.gwt:gwt-user:2.5.1'
+    compile 'com.google.gwt:gwt-elemental:2.5.1'
+    compile 'com.google.guava:guava:15.0'
+    testCompile 'junit:junit:4.11'
+    testCompile 'javax.validation:validation-api:1.1.0.Final'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-URL': "https://github.com/FinamTrade/angulargwt",
+                'Build-Date': new java.text.SimpleDateFormat("HH:mm:ss yyyy/MM/dd").format(new Date()),
+        )
+    }
+
+    dependsOn classes
+    from project.sourceSets.main.allSource
+    includes = ['**/*']
+}
+
+task srcs(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from project.sourceSets.main.allSource
+}
+
+uploadArchives {
+    artifacts {
+        archives srcs
+    }
+    repositories {
+        mavenDeployer {
+            repository(url: "http://msk-projects2:81/artifactory/libs-snapshot-local")
+        }
+    }
+}
+
