@@ -2,7 +2,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 idea {
-    module {
+    project {
         languageLevel = '1.6'
     }
 }
@@ -17,7 +17,10 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
 
-    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
 
     sourceSets {
         main {
@@ -36,8 +39,8 @@ subprojects {
         }
     }
 
-    group = 'com.google.gwt'
-    version = '1.0-SNAPSHOT'
+    group = 'ru.finam'
+    version = '1.0'
 
     repositories {
         mavenCentral()
