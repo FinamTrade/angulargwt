@@ -1,12 +1,17 @@
 apply plugin: 'signing'
 
+configurations { gwtCompile }
+
 dependencies {
-    compile 'com.google.gwt:gwt-dev:2.5.1'
+    gwtCompile 'com.google.gwt:gwt-dev:2.5.1'
     compile 'com.google.gwt:gwt-user:2.5.1'
     compile 'com.google.gwt:gwt-elemental:2.5.1'
     compile 'com.google.guava:guava:15.0'
     testCompile 'junit:junit:4.11'
-    testCompile 'javax.validation:validation-api:1.1.0.Final'
+}
+
+sourceSets {
+    main.compileClasspath += configurations.gwtCompile
 }
 
 jar {
@@ -46,7 +51,7 @@ signing {
 }
 
 def sonatypeProperties = new Properties()
-sonatypeProperties.load(new FileInputStream('~/.sonatype.properties'))
+sonatypeProperties.load(new FileInputStream("${System.properties['user.home']}/.sonatype.properties"))
 for (String key : sonatypeProperties.stringPropertyNames()) {
     project.ext.set(key, sonatypeProperties.getProperty(key))
 }
