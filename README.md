@@ -26,7 +26,6 @@ or ivy:
 ```
 
 Add dependency in your gwt module descriptor (*.gwt.xml)
-and turn gwt logging on:
 ```xml
 <inherits name="com.google.gwt.angular.angulargwt"/>
 ```
