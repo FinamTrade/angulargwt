@@ -30,7 +30,7 @@ Add dependency in your gwt module descriptor (*.gwt.xml)
 <inherits name="com.google.gwt.angular.angulargwt"/>
 ```
 
-Look at TodoMVC app to learn how to angulargwt in your project.
+Look at TodoMVC app to learn how to use angulargwt in your project.
 
 WARNING: Recommended that you use SuperDevMode develop, completely untested in DevMode. Uses lots of compiler casting 
 magic to reduce code size, but is likely to break when running inside a JVM.
