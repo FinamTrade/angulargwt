@@ -8,14 +8,12 @@ idea {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.8'
+    gradleVersion = '1.10'
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
-    apply plugin: 'idea'
-    apply plugin: 'eclipse'
 
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = 'UTF-8'
@@ -38,9 +36,6 @@ subprojects {
             }
         }
     }
-
-    group = 'ru.finam'
-    version = '1.0'
 
     repositories {
         mavenCentral()

@@ -1,4 +1,16 @@
-apply plugin: 'signing'
+apply plugin: 'nexus'
+
+group 'ru.finam'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.6.1'
+    }
+}
 
 configurations { gwtCompile }
 
@@ -29,83 +41,45 @@ jar {
     includes = ['**/*']
 }
 
+modifyPom {
+    project {
+        name 'angulargwt'
+        description 'AngularJS integration for GWT'
+        url 'https://github.com/FinamTrade/angulargwt'
+        inceptionYear '2013'
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
+        scm {
+            url 'https://github.com/FinamTrade/angulargwt'
+            connection 'scm:git:https://github.com/FinamTrade/angulargwt.git'
+            developerConnection 'scm:git:git@github.com:FinamTrade/angulargwt.git'
+        }
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
 
-artifacts {
-    archives jar
-    archives javadocJar
-    archives sourcesJar
-}
+        issueManagement {
+            url 'https://github.com/FinamTrade/angulargwt/issues'
+            system 'GitHub Issues'
+        }
 
-signing {
-    sign configurations.archives
-}
-
-def sonatypeProperties = new Properties()
-sonatypeProperties.load(new FileInputStream("${System.properties['user.home']}/.sonatype.properties"))
-for (String key : sonatypeProperties.stringPropertyNames()) {
-    project.ext.set(key, sonatypeProperties.getProperty(key))
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { deployment -> signing.signPom(deployment) }
-
-            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
+        developers {
+            developer {
+                id 'korzhevskiy'
+                name 'Andrei Korzhevskii'
+                email 'a.korzhevskiy@gmail.com'
+                url 'https://github.com/nordligulv'
             }
 
-            pom.project {
-                name 'angulargwt'
-                packaging 'jar'
-                description 'AngularJS integration for GWT'
-                url 'https://github.com/FinamTrade/angulargwt'
-                inceptionYear '2013'
-
-                scm {
-                    url 'https://github.com/FinamTrade/angulargwt'
-                    connection 'scm:git:https://github.com/FinamTrade/angulargwt.git'
-                    developerConnection 'scm:git:git@github.com:FinamTrade/angulargwt.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-
-                issueManagement {
-                    url 'https://github.com/FinamTrade/angulargwt/issues'
-                    system 'GitHub Issues'
-                }
-
-                developers {
-                    developer {
-                        id 'korzhevskiy'
-                        name 'Andrei Korzhevskii'
-                        email 'a.korzhevskiy@gmail.com'
-                        url 'https://github.com/nordligulv'
-                    }
-
-                    developer {
-                        id 'ylevin'
-                        name 'Yury Levin'
-                        email 'levinum@gmail.com'
-                        url 'https://github.com/ylevin'
-                    }
-                }
+            developer {
+                id 'ylevin'
+                name 'Yury Levin'
+                email 'levinum@gmail.com'
+                url 'https://github.com/ylevin'
             }
         }
     }
