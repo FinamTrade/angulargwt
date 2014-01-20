@@ -686,8 +686,14 @@ public class AngularGenerator extends Generator {
 
   private String getPropertyName(JMethod method) {
     String name = method.getName();
-    name = isBeanStyle(method) ? name.substring(name.startsWith("is") ? 2 : 3) : name;
-    return Character.toLowerCase(name.charAt(0)) + name.substring(1);
+    if (isBeanStyle(method)) {
+      if (name.startsWith("is")) {
+        name = name.substring(2);
+      } else if (name.startsWith("get") || name.startsWith("set")) {
+        name = name.substring(3);
+      }
+    }
+    return Character.toLowerCase(name.charAt(0)) + (name.length() > 1 ? name.substring(1) : "");
   }
 
   private boolean isBeanStyle(JMethod method) {
