@@ -481,8 +481,11 @@ public class AngularGenerator extends Generator {
 
   private boolean isGetter(JMethod method) {
     String name = method.getName();
+    // traditional boolean isFooField() JavaBean getter
+    if (name.startsWith("is") && Character.isUpperCase(name.charAt(2))) {
+      return method.getReturnType().isPrimitive() == JPrimitiveType.BOOLEAN && method.getParameters().length == 0;
     // traditional Type getFooField() JavaBean getter
-    if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
+    } else if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
       return method.getParameters().length == 0;
       // non traditional Type foo() getter, needs to have paired setter to be detected correctly
     } else if (method.getParameters().length == 0) {
@@ -678,12 +681,17 @@ public class AngularGenerator extends Generator {
   }
 
   private String quotedFieldName(JMethod method) {
-    String name = method.getName().substring(isBeanStyle(method) ? 3 : 0);
-    return "\"" + Character.toLowerCase(name.charAt(0)) + name.substring(1) + "\"";
+    return "\"" + getPropertyName(method) + "\"";
+  }
+
+  private String getPropertyName(JMethod method) {
+    String name = method.getName();
+    name = isBeanStyle(method) ? name.substring(name.startsWith("is") ? 2 : 3) : name;
+    return Character.toLowerCase(name.charAt(0)) + name.substring(1);
   }
 
   private boolean isBeanStyle(JMethod method) {
-    return method.getName().startsWith("get") || method.getName().startsWith("set");
+    return isGetter(method) || isSetter(method);
   }
 
   private JMethod findInitMethod(JClassType type, TreeLogger logger)
