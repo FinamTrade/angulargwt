@@ -140,6 +140,7 @@ public class AngularGenerator extends Generator {
             simpleName);
     fac.addImport(GWT.class.getName());
     fac.addImport(Util.class.getName());
+    fac.addImport(Angular.class.getName());
     fac.addImplementedInterface(AngularModule.class.getName());
     PrintWriter pw = context.tryCreate(logger, type.getPackage().getName(),
         simpleName);
@@ -154,8 +155,22 @@ public class AngularGenerator extends Generator {
     }
     sw.indent();
     sw.println("public " + simpleName + "() {");
+
+    StringBuilder outerDeps = new StringBuilder();
+
     sw.indent();
-    // init(GWT.create(dep1), GWT.create(dep2))
+    if (deps != null) {
+      for (Class<?> clazz : deps.value()) {
+        if (AngularModule.class.isAssignableFrom(clazz) &&
+            clazz.getAnnotation(NgName.class) != null) {
+
+          sw.println("GWT.create(" + clazz.getName() + ".class);");
+          String name = clazz.getAnnotation(NgName.class).value();
+          outerDeps.append("'").append(name).append("',");
+        }
+      }
+    }
+
     sw.print("init(");
     if (deps != null) {
       boolean first = true;
@@ -182,7 +197,6 @@ public class AngularGenerator extends Generator {
       modName = ngName.value();
     }
 
-    StringBuilder outerDeps = new StringBuilder();
     NgNativeDepends nativeDeps = type.getAnnotation(NgNativeDepends.class);
     if (nativeDeps != null) {
       for (String dep : nativeDeps.value()) {
@@ -197,6 +211,10 @@ public class AngularGenerator extends Generator {
     if (deps != null) {
       int i = 0;
       for (Class<?> clazz : deps.value()) {
+        if (AngularModule.class.isAssignableFrom(clazz)) {
+          continue;
+        }
+
         NgInject ngInject = clazz.getAnnotation(NgInject.class);
         if (ngInject != null) {
           if (AngularController.class.isAssignableFrom(clazz)) {

@@ -1,4 +1,5 @@
 apply plugin: 'nexus'
+apply plugin: 'idea'
 
 group 'ru.finam'
 
@@ -15,7 +16,7 @@ buildscript {
 configurations { gwtCompile }
 
 dependencies {
-    gwtCompile 'com.google.gwt:gwt-dev:2.5.1'
+    compile 'com.google.gwt:gwt-dev:2.5.1'
     compile 'com.google.gwt:gwt-user:2.5.1'
     compile 'com.google.gwt:gwt-elemental:2.5.1'
     compile 'com.google.guava:guava:16.0'
