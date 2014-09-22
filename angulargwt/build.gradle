@@ -16,10 +16,10 @@ buildscript {
 configurations { gwtCompile }
 
 dependencies {
-    compile 'com.google.gwt:gwt-dev:2.5.1'
-    compile 'com.google.gwt:gwt-user:2.5.1'
-    compile 'com.google.gwt:gwt-elemental:2.5.1'
-    compile 'com.google.guava:guava:16.0'
+    compile 'com.google.gwt:gwt-dev:2.6.1'
+    compile 'com.google.gwt:gwt-user:2.6.1'
+    compile 'com.google.gwt:gwt-elemental:2.6.1'
+    compile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.11'
 }
 
@@ -85,3 +85,4 @@ modifyPom {
         }
     }
 }
+

@@ -485,7 +485,7 @@ public class AngularGenerator extends Generator {
   private boolean isSetter(JMethod method) {
     String name = method.getName();
     // traditional setFooField(type) JavaBean setter
-    if (name.startsWith("set") && Character.isUpperCase(name.charAt(3))) {
+    if (name.startsWith("set") && name.length() > 3 && Character.isUpperCase(name.charAt(3))) {
       return method.getParameters().length == 1 &&
           (method.getReturnType() == JPrimitiveType.VOID || method.getReturnType() == method
               .getEnclosingType());
@@ -500,10 +500,10 @@ public class AngularGenerator extends Generator {
   private boolean isGetter(JMethod method) {
     String name = method.getName();
     // traditional boolean isFooField() JavaBean getter
-    if (name.startsWith("is") && Character.isUpperCase(name.charAt(2))) {
+    if (name.startsWith("is") && name.length() > 2 && Character.isUpperCase(name.charAt(2))) {
       return method.getReturnType().isPrimitive() == JPrimitiveType.BOOLEAN && method.getParameters().length == 0;
     // traditional Type getFooField() JavaBean getter
-    } else if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
+    } else if (name.startsWith("get") && name.length() > 3 && Character.isUpperCase(name.charAt(3))) {
       return method.getParameters().length == 0;
       // non traditional Type foo() getter, needs to have paired setter to be detected correctly
     } else if (method.getParameters().length == 0) {
@@ -705,9 +705,10 @@ public class AngularGenerator extends Generator {
   private String getPropertyName(JMethod method) {
     String name = method.getName();
     if (isBeanStyle(method)) {
-      if (name.startsWith("is")) {
+      if (name.startsWith("is") && name.length() > 2 && Character.isUpperCase(name.charAt(2))) {
         name = name.substring(2);
-      } else if (name.startsWith("get") || name.startsWith("set")) {
+      } else if ((name.startsWith("get") || name.startsWith("set"))
+              && name.length() > 3 && Character.isUpperCase(name.charAt(3))) {
         name = name.substring(3);
       }
     }
