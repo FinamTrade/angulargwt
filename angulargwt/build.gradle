@@ -7,28 +7,18 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
-        mavenLocal()
     }
     dependencies {
         classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.6.1'
     }
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-    mavenLocal()
-}
-
 configurations { gwtCompile }
 
 dependencies {
-    //compile 'com.google.gwt:gwt-dev:2.6.1'
-    compile 'com.google.gwt:gwt-dev:2.7.0.8'
-    //compile 'com.google.gwt:gwt-user:2.6.1'
-    compile 'com.google.gwt:gwt-user:2.7.0.8'
-    //compile 'com.google.gwt:gwt-elemental:2.6.1'
-    compile 'com.google.gwt:gwt-elemental:2.7.0.8'
+    compile 'com.google.gwt:gwt-dev:2.6.1'
+    compile 'com.google.gwt:gwt-user:2.6.1'
+    compile 'com.google.gwt:gwt-elemental:2.6.1'
     compile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.11'
 }
