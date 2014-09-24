@@ -353,7 +353,7 @@ public class AngularGenerator extends Generator {
 
     String scopeAdapter = null;
     if (scopeClass != null) {
-      scopeAdapter = generateScope(logger, context, scopeClass);
+      scopeAdapter = generateScope(logger, context, scopeClass, false);
     }
     // this override teaches the compiler that TodoScope has been instantiated so it is not pruned
     sw.indent();
@@ -524,7 +524,12 @@ public class AngularGenerator extends Generator {
   }
 
   private String generateScope(TreeLogger logger, GeneratorContext context,
-                               JClassType scopeClass)
+                                 JClassType scopeClass) throws UnableToCompleteException {
+      return generateScope(logger, context, scopeClass, true);
+  }
+
+  private String generateScope(TreeLogger logger, GeneratorContext context,
+                               JClassType scopeClass, boolean jsoSuffix)
       throws UnableToCompleteException {
     String simpleName = scopeClass.getName() + SCOPEIMPL;
     ClassSourceFileComposerFactory fac =
@@ -539,7 +544,10 @@ public class AngularGenerator extends Generator {
     PrintWriter pw = context.tryCreate(logger, scopeClass.getPackage().getName(),
         simpleName);
     SourceWriter sw = null;
-    String typeName = scopeClass.getQualifiedSourceName() + SCOPEIMPL;
+    String typeName = scopeClass.getQualifiedSourceName();
+    if (jsoSuffix) {
+        typeName += SCOPEIMPL;
+    }
 
     if (pw != null) {
       sw = fac.createSourceWriter(context, pw);
