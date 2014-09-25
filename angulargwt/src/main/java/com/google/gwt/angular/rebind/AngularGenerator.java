@@ -372,9 +372,9 @@ public class AngularGenerator extends Generator {
     sw.println(") {");
     sw.indent();
     sw.println(
-        "self.@" + typeName + IMPL + "::setScope" +
-            "(*)($scope);");
-    sw.print("self." + onInitMethod.getJsniSignature() + "(");
+            "self.@" + typeName + IMPL + "::setScope" +
+                    "(" + "L" + scopeAdapter.replace(".", "/") + ";" + ")($scope);");
+      sw.print("self." + onInitMethod.getJsniSignature() + "(");
     String controllerParams = Joiner.on(", ").join(params);
     sw.print(controllerParams);
     sw.println(");");
