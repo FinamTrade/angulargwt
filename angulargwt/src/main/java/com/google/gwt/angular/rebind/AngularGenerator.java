@@ -26,11 +26,13 @@ public class AngularGenerator extends Generator {
 //  private static final String FACTORY = "Factory";
   private static final String MODELIMPL = "Jso";
   private static final String MODULEIMPL = "Impl";
+  private static final String FACTORYIMPL = "Impl";
   private JClassType scopeType;
   private JClassType elementType;
   private JClassType gwtElementType;
   private JClassType stringType;
   private JClassType controllerType;
+  private JClassType jsoFactoryType;
   private JClassType modelType;
   private JClassType moduleType;
 //  private JClassType factoryType;
@@ -45,13 +47,16 @@ public class AngularGenerator extends Generator {
     gwtElementType = typeOracle.findType(com.google.gwt.dom.client.Element.class.getName());
     stringType = typeOracle.findType(String.class.getName());
     controllerType = typeOracle.findType(AngularController.class.getName());
+    jsoFactoryType = typeOracle.findType(JsoFactory.class.getName());
     modelType = typeOracle.findType(Model.class.getName());
     moduleType = typeOracle.findType(AngularModule.class.getName());
 //    factoryType = typeOracle.findType(Factory.class.getName());
     arrayOfType = typeOracle.findType(ArrayOf.class.getName());
     logger.log(TreeLogger.Type.DEBUG, "Generating " + typeName);
     JClassType type = typeOracle.findType(typeName);
-    if (type.isAssignableTo(controllerType)) {
+    if (type.isAssignableTo(jsoFactoryType)) {
+      return generateJsoFactory(logger, context, type);
+    } else if (type.isAssignableTo(controllerType)) {
       return generateController(logger, context, typeName, type);
     } else if (type.isAssignableTo(scopeType)) {
       return generateScope(logger, context, type);
@@ -310,6 +315,47 @@ public class AngularGenerator extends Generator {
       return typeName;
     }
     generateBeanImpl(logger, context, modelType, simpleName, sw);
+
+    sw.commit(logger);
+    return typeName;
+  }
+
+  private String generateJsoFactory(TreeLogger logger, GeneratorContext context, JClassType type)
+          throws UnableToCompleteException {
+    JClassType interfaceType = type.isInterface();
+    if (interfaceType == null) {
+      logger.log(TreeLogger.Type.ERROR, type.getName() + " must be an interface.");
+      throw new UnableToCompleteException();
+    }
+    String simpleName = type.getSimpleSourceName().replace('.', '_') + FACTORYIMPL;
+    ClassSourceFileComposerFactory fac =
+            new ClassSourceFileComposerFactory(type.getPackage().getName(), simpleName);
+    fac.addImplementedInterface(type.getQualifiedSourceName());
+    PrintWriter pw = context.tryCreate(logger, type.getPackage().getName(), simpleName);
+    SourceWriter sw = null;
+    String typeName = type.getPackage().getName() + "." + simpleName;
+
+    if (pw != null) {
+      sw = fac.createSourceWriter(context, pw);
+    }
+    if (sw == null) {
+      return typeName;
+    }
+
+    for (JMethod method : type.getInheritableMethods()) {
+      JType returnType = method.getReturnType();
+      JClassType dependentType = returnType.isClassOrInterface();
+      String dependentTypeName = generateDependentType(logger, context, dependentType);
+      if (dependentTypeName == null) {
+        logger.log(TreeLogger.Type.ERROR, dependentType.getName() + " must be scope or model.");
+        throw new UnableToCompleteException();
+      }
+      sw.println("final public " + dependentTypeName + " " + method.getName() + "() {");
+      sw.indent();
+      sw.println("return (" + dependentTypeName + ") " + JavaScriptObject.class.getName() + ".createObject();");
+      sw.outdent();
+      sw.println("}");
+    }
 
     sw.commit(logger);
     return typeName;
@@ -673,18 +719,19 @@ public class AngularGenerator extends Generator {
     }
   }
 
-  private void generateDependentType(TreeLogger logger, GeneratorContext context,
+  private String  generateDependentType(TreeLogger logger, GeneratorContext context,
                                      JClassType classOrInterface) throws UnableToCompleteException {
     if (classOrInterface != null) {
       if (classOrInterface.isAssignableTo(scopeType)) {
-        generateScope(logger, context, classOrInterface);
+        return generateScope(logger, context, classOrInterface);
       } else if (classOrInterface.isAssignableTo(modelType)) {
-        generateModelType(logger, context, classOrInterface);
+        return generateModelType(logger, context, classOrInterface);
       } else if (classOrInterface.isAssignableTo(arrayOfType) &&
           classOrInterface.isParameterized() != null) {
         generateDependentType(logger, context, classOrInterface.isParameterized().getTypeArgs()[0]);
       }
     }
+    return null;
   }
 
   private void maybeFluentReturn(SourceWriter sw, JMethod method) {

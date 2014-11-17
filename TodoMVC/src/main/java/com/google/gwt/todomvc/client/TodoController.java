@@ -8,6 +8,12 @@ import elemental.util.ArrayOf;
 @NgInject(name = "TodoCtrl")
 public class TodoController extends AngularController<TodoScope> {
 
+  interface TodoJsoFactory extends JsoFactory {
+    Todo makeTodo();
+  }
+
+  private final TodoJsoFactory jsoFactory = GWT.create(TodoJsoFactory.class);
+
   private ArrayOf<Todo> todos;
   private Location location;
   private TodoStorage store;
@@ -29,7 +35,7 @@ public class TodoController extends AngularController<TodoScope> {
 
   @NgWatch(value = "todos", objEq = true)
   public void $watchTodos() {
-    Todo todoPredicate = makeTodo();
+    Todo todoPredicate = jsoFactory.makeTodo();
     todoPredicate.setCompleted(false);
     scope.remainingCount(filterFilter.filter(todos, todoPredicate).length())
         .doneCount(todos.length() - scope.remainingCount())
@@ -40,20 +46,16 @@ public class TodoController extends AngularController<TodoScope> {
   @NgWatch("location.path()")
   public void $watchPath(String path) {
     scope.statusFilter("/active".equals(path) ?
-        makeTodo().setCompleted(false) :
+            jsoFactory.makeTodo().setCompleted(false) :
         "/completed".equals(path) ?
-            makeTodo().setCompleted(true) : null);
-  }
-
-  private Todo makeTodo() {
-    return GWT.create(Todo.class);
+                jsoFactory.makeTodo().setCompleted(true) : null);
   }
 
   public void addTodo() {
     if (scope.newTodo().length() == 0) {
       return;
     }
-    Todo newTodo = makeTodo();
+    Todo newTodo = jsoFactory.makeTodo();
     newTodo.setTitle(scope.newTodo())
         .setCompleted(false);
     todos.push(newTodo);

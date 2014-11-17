@@ -6,7 +6,7 @@ import com.google.gwt.angular.client.WatchFunction;
 /**
  * Base class of generated scopes.
  */
-public class JsScopeBase<T extends Scope<T>> extends JsModelBase<T> implements Scope<T> {
+public abstract class JsScopeBase<T extends Scope<T>> extends JsModelBase<T> implements Scope<T> {
   protected JsScopeBase() {
   }
 

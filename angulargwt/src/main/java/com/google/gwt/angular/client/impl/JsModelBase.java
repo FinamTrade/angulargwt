@@ -8,7 +8,7 @@ import elemental.json.JsonObject;
 /**
  * Base of all Model implementations.
  */
-public class JsModelBase<T extends Model<T>> extends JavaScriptObject implements Model<T> {
+public abstract class JsModelBase<T extends Model<T>> extends JavaScriptObject implements Model<T> {
   protected JsModelBase() {
   }
 
